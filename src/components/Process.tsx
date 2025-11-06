@@ -42,7 +42,8 @@ export default function Process() {
 
   return (
     <section className="py-20 relative bg-dark-secondary/30">
-      <div className="section-padding mx-auto">
+      <div className="section-padding w-full">
+        <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
@@ -72,7 +73,7 @@ export default function Process() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="relative"
               >
-                <div className="glass-effect rounded-2xl p-6 text-center hover-glow group">
+                <div className="glass-effect rounded-2xl p-6 text-center hover-glow group h-full min-h-[280px] flex flex-col">
                   {/* Step Number */}
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                     <div className="bg-gradient-primary text-dark-bg w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">
@@ -89,16 +90,18 @@ export default function Process() {
                   <h3 className="text-xl font-bold mb-2 gradient-text">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-gray-300 mb-4">
+                  <p className="text-sm text-gray-300 mb-4 flex-grow">
                     {step.description}
                   </p>
 
                   {/* Timeline */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-cyan/10 rounded-full">
-                    <div className="w-2 h-2 bg-primary-cyan rounded-full animate-pulse"></div>
-                    <span className="text-xs font-semibold text-primary-cyan">
-                      {step.timeline}
-                    </span>
+                  <div className="flex justify-center">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-cyan/10 rounded-full">
+                      <div className="w-2 h-2 bg-primary-cyan rounded-full animate-pulse"></div>
+                      <span className="text-xs font-semibold text-primary-cyan">
+                        {step.timeline}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -111,6 +114,7 @@ export default function Process() {
               </motion.div>
             ))}
           </div>
+        </div>
         </div>
       </div>
     </section>

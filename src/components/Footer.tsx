@@ -1,6 +1,19 @@
 'use client'
 import { motion } from 'framer-motion'
-import { Linkedin, Twitter, Instagram, Mail, Phone, MapPin, Heart } from 'lucide-react'
+import { Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react'
+
+// TikTok Icon Component
+const TikTokIcon = ({ size = 20 }: { size?: number }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+  </svg>
+)
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -22,20 +35,21 @@ export default function Footer() {
     ],
     contact: [
       { icon: <Mail size={16} />, text: 'miguel@kanarianlabs.com', href: 'mailto:miguel@kanarianlabs.com' },
-      { icon: <Phone size={16} />, text: '+51 999 999 999', href: 'tel:+51999999999' },
+      { icon: <Phone size={16} />, text: '+51 976 999 009', href: 'tel:+51976999009' },
       { icon: <MapPin size={16} />, text: 'Lima, Perú', href: '#' },
     ]
   }
 
   const socialLinks = [
-    { icon: <Linkedin size={20} />, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: <Twitter size={20} />, href: 'https://twitter.com', label: 'Twitter' },
-    { icon: <Instagram size={20} />, href: 'https://instagram.com', label: 'Instagram' },
+    { icon: <TikTokIcon size={20} />, href: 'https://tiktok.com/@kanarianlabs', label: 'TikTok' },
+    { icon: <Instagram size={20} />, href: 'https://instagram.com/kanarianlabs', label: 'Instagram' },
+    { icon: <Youtube size={20} />, href: 'https://youtube.com/@kanarianlabs', label: 'YouTube' },
   ]
 
   return (
     <footer className="bg-dark-bg border-t border-primary-cyan/10 pt-16 pb-8">
-      <div className="section-padding mx-auto">
+      <div className="section-padding w-full">
+        <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
@@ -47,7 +61,7 @@ export default function Footer() {
             >
               <div className="flex items-center space-x-2 mb-4">
                 <img
-                  src="/KanarianLabsLogoSinFondo.png"
+                  src="/logo.png"
                   alt="KanarianLabs Logo"
                   className="h-10 w-auto"
                 />
@@ -159,12 +173,12 @@ export default function Footer() {
               © {currentYear} KanarianLabs - Miguel Angel Ybañez. Todos los derechos reservados.
             </p>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-400">Hecho con</span>
-              <Heart className="text-red-500 animate-pulse" size={16} />
-              <span className="text-gray-400">en Lima, Perú</span>
+              <MapPin className="text-primary-cyan" size={16} />
+              <span className="text-gray-400">Lima, Perú</span>
             </div>
           </div>
         </motion.div>
+        </div>
       </div>
     </footer>
   )

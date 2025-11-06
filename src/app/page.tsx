@@ -1,5 +1,6 @@
 'use client'
 import { useEffect } from 'react'
+import PromoBanner from '@/components/PromoBanner'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
@@ -17,6 +18,7 @@ export default function Home() {
 
   return (
     <>
+      <PromoBanner />
       <Navbar />
       <main className="relative">
         <Hero />

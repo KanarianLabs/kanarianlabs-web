@@ -12,10 +12,12 @@ export default function Pricing() {
   const plans = [
     {
       name: "BÁSICO",
+      originalPrice: "S/500",
       price: "S/250",
       description: "Ideal para empezar tu presencia online",
+      subtitle: "Landing Page de 1 página",
       features: [
-        "3-4 secciones",
+        "3-4 bloques de contenido",
         "Diseño responsive",
         "2 revisiones incluidas",
         "Entrega en 10 días",
@@ -26,34 +28,40 @@ export default function Pricing() {
     },
     {
       name: "ESTÁNDAR",
-      price: "S/350",
+      originalPrice: "S/800",
+      price: "S/400",
       description: "La opción más elegida por nuestros clientes",
+      subtitle: "Sitio web multi-página",
       features: [
-        "5-6 secciones",
+        "5-6 páginas principales",
         "Diseño responsive",
         "2 revisiones incluidas",
         "Entrega en 15 días",
         "Formulario avanzado",
         "Optimización SEO completa",
         "Integración WhatsApp",
-        "Google Analytics"
+        "Blog integrado",
+        "Código fuente incluido"
       ],
       popular: true
     },
     {
       name: "PREMIUM",
-      price: "S/500+",
+      originalPrice: "S/1200+",
+      price: "S/600+",
       description: "Para proyectos más complejos y personalizados",
+      subtitle: "Sitio completo con sub-páginas",
       features: [
-        "7+ secciones",
+        "Múltiples páginas + sub-páginas",
         "Diseño 100% personalizado",
         "3 revisiones incluidas",
-        "Entrega en 20 días",
+        "Entrega según estimación",
         "Múltiples formularios",
         "SEO avanzado",
-        "Animaciones personalizadas",
         "Blog integrado",
-        "Multi-idioma"
+        "Google Analytics",
+        "Multi-idioma",
+        "Código fuente incluido"
       ],
       popular: false
     }
@@ -61,7 +69,8 @@ export default function Pricing() {
 
   return (
     <section id="pricing" className="py-20 relative">
-      <div className="section-padding mx-auto">
+      <div className="section-padding w-full">
+        <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
@@ -107,24 +116,33 @@ export default function Pricing() {
                 </div>
               )}
 
-              <div className={`glass-effect rounded-2xl p-8 h-full ${
+              <div className={`glass-effect rounded-2xl p-8 h-full flex flex-col ${
                 plan.popular ? 'border-2 border-primary-cyan' : 'border border-primary-cyan/20'
               } hover:border-primary-cyan transition-all duration-300`}>
                 <h3 className="text-2xl font-bold mb-2">
                   {plan.name}
                 </h3>
 
-                <div className="mb-4">
-                  <span className="text-4xl font-bold gradient-text">
-                    {plan.price}
-                  </span>
+                <div className="mb-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-bold gradient-text">
+                      {plan.price}
+                    </span>
+                    <span className="text-sm text-gray-500 line-through">
+                      {plan.originalPrice}
+                    </span>
+                  </div>
                 </div>
+
+                <p className="text-sm text-primary-cyan font-semibold mb-3">
+                  {plan.subtitle}
+                </p>
 
                 <p className="text-gray-300 mb-6">
                   {plan.description}
                 </p>
 
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-8 flex-grow">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <Check className="text-primary-cyan mt-1 flex-shrink-0" size={16} />
@@ -133,9 +151,9 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <button className={plan.popular ? "btn-primary w-full" : "btn-secondary w-full"}>
+                <a href="#contact" className={plan.popular ? "btn-primary w-full text-center" : "btn-secondary w-full text-center"}>
                   Cotizar Ahora
-                </button>
+                </a>
               </div>
 
               {plan.popular && (
@@ -145,11 +163,46 @@ export default function Pricing() {
           ))}
         </div>
 
+        {/* Note about pricing */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.5 }}
+          className="mt-12 text-center"
+        >
+          <p className="text-gray-400 text-sm mb-2">
+            * Precios aplicables para landing pages y sitios web informativos
+          </p>
+        </motion.div>
+
+        {/* CTA for complex projects */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.6 }}
+          className="mt-8 glass-effect rounded-2xl p-8 text-center border border-primary-yellow/30"
+        >
+          <h3 className="text-2xl font-bold mb-3 gradient-text">
+            ¿Necesitas algo más complejo?
+          </h3>
+          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+            Tiendas online (WooCommerce), aplicaciones web personalizadas, sistemas a medida y más.
+            <br />
+            <span className="text-primary-yellow font-semibold">Cotiza tu proyecto sin compromiso</span>
+          </p>
+          <a
+            href="#contact"
+            className="btn-primary inline-block text-center"
+          >
+            Cotizar Proyecto Personalizado
+          </a>
+        </motion.div>
+
         {/* Additional Services */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.8 }}
           className="mt-12 glass-effect rounded-2xl p-8 text-center"
         >
           <h3 className="text-2xl font-bold mb-4 gradient-text">
@@ -158,22 +211,26 @@ export default function Pricing() {
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <div className="flex items-center justify-between">
               <span className="text-gray-300">Hosting Premium</span>
-              <span className="font-bold text-primary-yellow">S/20/mes</span>
+              <span className="font-bold text-primary-yellow">Desde S/20/mes</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-300">Soporte Mensual</span>
-              <span className="font-bold text-primary-yellow">S/20/mes</span>
+              <span className="font-bold text-primary-yellow">Desde S/20/mes</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-300">Cambios adicionales</span>
               <span className="font-bold text-primary-yellow">S/20 c/u</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-300">Código fuente completo</span>
-              <span className="font-bold text-primary-yellow">+S/400</span>
+              <span className="text-gray-300">Código fuente (proyectos complejos)*</span>
+              <span className="font-bold text-primary-yellow">Variable</span>
             </div>
           </div>
+          <p className="text-gray-400 text-xs mt-4">
+            * Para ecommerce, aplicaciones web y sistemas personalizados. Landing pages incluyen código fuente en planes Estándar y Premium.
+          </p>
         </motion.div>
+        </div>
       </div>
     </section>
   )

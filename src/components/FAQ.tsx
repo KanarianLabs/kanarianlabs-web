@@ -38,7 +38,7 @@ export default function FAQ() {
     },
     {
       question: "¿Qué necesitas de mí para empezar?",
-      answer: "Necesito: 1) Todos tus textos definitivos, 2) Imágenes en alta calidad, 3) Logo (si tienes), 4) Colores corporativos (opcional), 5) Referencias de sitios que te gusten. Todo esto lo subes a una carpeta de Google Drive que compartiremos."
+      answer: "Necesito:\n\n• Todos tus textos definitivos\n• Imágenes en alta calidad\n• Logo (si tienes)\n• Colores corporativos (opcional)\n• Referencias de sitios que te gusten\n\nTodo esto lo subes a una carpeta de Google Drive que compartiremos."
     },
     {
       question: "¿Qué métodos de pago aceptas?",
@@ -48,7 +48,8 @@ export default function FAQ() {
 
   return (
     <section className="py-20 relative bg-dark-secondary/30">
-      <div className="section-padding mx-auto max-w-4xl">
+      <div className="section-padding w-full">
+        <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
@@ -104,7 +105,7 @@ export default function FAQ() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-4 text-gray-300">
+                    <div className="px-6 pb-4 text-gray-300 whitespace-pre-line">
                       {faq.answer}
                     </div>
                   </motion.div>
@@ -113,6 +114,7 @@ export default function FAQ() {
             </motion.div>
           ))}
         </motion.div>
+        </div>
       </div>
     </section>
   )

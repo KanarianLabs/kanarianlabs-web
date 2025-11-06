@@ -12,13 +12,14 @@ export default function Services() {
   const services = [
     {
       icon: <Globe size={48} />,
-      title: "Landing Pages Profesionales",
-      description: "Páginas web modernas y responsivas para tu negocio",
+      title: "Sitios Web & Ecommerce",
+      description: "Páginas web, WordPress y tiendas online para tu negocio",
       features: [
-        "Diseño 100% personalizado",
-        "Responsivo (móvil, tablet, desktop)",
-        "Formularios de contacto",
-        "Optimización de velocidad"
+        "Landing pages personalizadas",
+        "Sitios WordPress profesionales",
+        "Tiendas online (ecommerce)",
+        "Responsivo en todos los dispositivos",
+        "Formularios y optimización SEO"
       ],
       price: "Desde S/250",
       buttonText: "Ver más",
@@ -77,7 +78,8 @@ export default function Services() {
 
   return (
     <section id="services" className="py-20 relative">
-      <div className="section-padding mx-auto">
+      <div className="section-padding w-full">
+        <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
@@ -107,7 +109,7 @@ export default function Services() {
               whileHover={{ y: -10, scale: 1.02 }}
               className="relative group"
             >
-              <div className="glass-effect rounded-2xl p-8 h-full border border-primary-cyan/20 hover:border-primary-cyan/50 transition-all duration-300">
+              <div className="glass-effect rounded-2xl p-8 h-full border border-primary-cyan/20 hover:border-primary-cyan/50 transition-all duration-300 flex flex-col">
                 {!service.available && (
                   <div className="absolute -top-3 -right-3 bg-gradient-primary text-dark-bg px-4 py-1 rounded-full text-sm font-bold">
                     Próximamente
@@ -126,7 +128,7 @@ export default function Services() {
                   {service.description}
                 </p>
 
-                <ul className="space-y-3 mb-6">
+                <ul className="space-y-3 mb-6 flex-grow">
                   {service.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <Check className="text-primary-cyan mt-1 flex-shrink-0" size={16} />
@@ -139,18 +141,24 @@ export default function Services() {
                   <span className="text-2xl font-bold text-primary-yellow">
                     {service.price}
                   </span>
-                  <button
-                    className={service.available ? "btn-secondary text-sm" : "btn-secondary text-sm opacity-50 cursor-not-allowed"}
-                    disabled={!service.available}
-                  >
-                    {service.available && <span>{service.buttonText}</span>}
-                    {!service.available && (
+                  {service.available ? (
+                    <a
+                      href="#pricing"
+                      className="btn-secondary text-sm"
+                    >
+                      <span>{service.buttonText}</span>
+                    </a>
+                  ) : (
+                    <button
+                      className="btn-secondary text-sm opacity-50 cursor-not-allowed"
+                      disabled={true}
+                    >
                       <span className="flex items-center gap-2">
                         <Lock size={16} />
                         {service.buttonText}
                       </span>
-                    )}
-                  </button>
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -159,6 +167,7 @@ export default function Services() {
             </motion.div>
           ))}
         </motion.div>
+        </div>
       </div>
     </section>
   )

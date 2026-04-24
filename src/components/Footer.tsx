@@ -1,6 +1,8 @@
 'use client'
 import { motion } from 'framer-motion'
 import { Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 
 // TikTok Icon Component
 const TikTokIcon = ({ size = 20 }: { size?: number }) => (
@@ -20,14 +22,15 @@ export default function Footer() {
 
   const footerLinks = {
     services: [
-      { name: 'Landing Pages', href: '#services' },
-      { name: 'Hosting Premium', href: '#services' },
-      { name: 'Soporte Mensual', href: '#services' },
+      { name: 'Sitios Web', href: '/#services' },
+      { name: 'Automatización n8n', href: '/automatizacion' },
+      { name: 'Aplicaciones Web', href: '/#services' },
+      { name: 'Hosting & Soporte', href: '/#services' },
     ],
     resources: [
-      { name: 'Blog', href: '#' },
-      { name: 'Portafolio', href: '#portfolio' },
-      { name: 'FAQ', href: '#faq' },
+      { name: 'Precios', href: '/#pricing' },
+      { name: 'Proceso', href: '/#process' },
+      { name: 'FAQ', href: '/#faq' },
     ],
     legal: [
       { name: 'Términos y Condiciones', href: '#terms' },
@@ -47,7 +50,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-dark-bg border-t border-primary-cyan/10 pt-16 pb-8">
+    <footer className="bg-dark-bg border-t border-primary-cyan/10 pt-16 pb-8" role="contentinfo">
       <div className="section-padding w-full">
         <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
@@ -59,14 +62,16 @@ export default function Footer() {
               viewport={{ once: true }}
               className="mb-4"
             >
-              <div className="flex items-center space-x-2 mb-4">
-                <img
+              <Link href="/" className="flex items-center space-x-2 mb-4" aria-label="KanarianLabs — ir al inicio">
+                <Image
                   src="/logo.png"
-                  alt="KanarianLabs Logo"
-                  className="h-10 w-auto"
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="h-10 w-10"
                 />
                 <span className="text-xl font-bold gradient-text">KanarianLabs</span>
-              </div>
+              </Link>
               <p className="text-gray-400 mb-6">
                 Desarrollo Web Profesional en Perú. Transformamos ideas en presencia digital que convierte.
               </p>

@@ -2,179 +2,161 @@
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const menuItems = [
+  { name: 'Inicio', href: '/#hero', id: 'hero' },
+  { name: 'Servicios', href: '/#services', id: 'services' },
+  { name: 'Automatización', href: '/automatizacion', id: 'automations', external: false },
+  { name: 'Precios', href: '/#pricing', id: 'pricing' },
+  { name: 'FAQ', href: '/#faq', id: 'faq' },
+  { name: 'Contacto', href: '/#contact', id: 'contact' },
+]
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
-  const [bannerClosed, setBannerClosed] = useState(false)
+  const [bannerClosed, setBannerClosed] = useState(true)
+  const pathname = usePathname()
+  const isSubRoute = pathname !== '/'
 
   useEffect(() => {
-    // Check if banner is closed on mount
     if (typeof window !== 'undefined') {
       const isClosed = localStorage.getItem('promoBannerClosed')
-      setBannerClosed(isClosed === 'true')
+      setBannerClosed(isClosed === 'true' || isSubRoute)
     }
-
-    // Listen for banner close event
-    const handleBannerClose = () => {
-      setBannerClosed(true)
-    }
-
+    const handleBannerClose = () => setBannerClosed(true)
     window.addEventListener('promoBannerClosed', handleBannerClose)
     return () => window.removeEventListener('promoBannerClosed', handleBannerClose)
-  }, [])
+  }, [isSubRoute])
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
+      if (isSubRoute) return
 
-      // Detect active section
-      const sections = ['hero', 'services', 'portfolio', 'pricing', 'contact']
-      const scrollPosition = window.scrollY + 100
-
+      const sections = ['hero', 'services', 'automations', 'pricing', 'faq', 'contact']
+      const scrollPosition = window.scrollY + 120
       for (const sectionId of sections) {
         const section = document.getElementById(sectionId)
         if (section) {
-          const sectionTop = section.offsetTop
-          const sectionBottom = sectionTop + section.offsetHeight
-
-          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          const top = section.offsetTop
+          const bottom = top + section.offsetHeight
+          if (scrollPosition >= top && scrollPosition < bottom) {
             setActiveSection(sectionId)
             break
           }
         }
       }
     }
-
-    handleScroll() // Initial check
-    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [isSubRoute])
 
-  const menuItems = [
-    { name: 'Inicio', href: '#hero', id: 'hero' },
-    { name: 'Servicios', href: '#services', id: 'services' },
-    { name: 'Portafolio', href: '#portfolio', id: 'portfolio' },
-    { name: 'Precios', href: '#pricing', id: 'pricing' },
-    { name: 'Contacto', href: '#contact', id: 'contact' },
-  ]
+  const isActive = (item: typeof menuItems[number]) => {
+    if (item.href === '/automatizacion') return pathname === '/automatizacion'
+    if (isSubRoute) return false
+    return activeSection === item.id
+  }
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
+      aria-label="Navegación principal"
       className={`fixed w-full z-50 transition-all duration-300 ${
-        bannerClosed ? 'top-0' : 'top-[52px]'
-      } ${isScrolled ? 'glass-effect py-4' : 'py-6'}`}
+        bannerClosed ? 'top-0' : 'top-[38px] sm:top-[44px]'
+      } ${isScrolled ? 'glass-effect py-3' : 'py-5'}`}
     >
       <div className="section-padding w-full">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center space-x-2"
-          >
-            <img
+          <Link href="/" className="flex items-center gap-2 group" aria-label="KanarianLabs — ir al inicio">
+            <Image
               src="/logo.png"
-              alt="KanarianLabs Logo"
-              className="h-10 w-auto"
+              alt=""
+              width={40}
+              height={40}
+              priority
+              className="h-9 w-9 md:h-10 md:w-10"
             />
-            <span className="text-xl font-bold gradient-text">KanarianLabs</span>
-          </motion.div>
+            <span className="text-lg md:text-xl font-bold gradient-text">KanarianLabs</span>
+          </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            {menuItems.map((item, index) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * (index + 1) }}
-                className="relative"
-              >
-                <a
-                  href={item.href}
-                  className={`text-gray-300 hover:text-primary-cyan transition-colors duration-300 ${
-                    activeSection === item.id ? 'text-primary-cyan' : ''
-                  }`}
-                >
-                  {item.name}
-                </a>
-                {/* Animated underline with blur */}
-                <AnimatePresence>
-                  {activeSection === item.id && (
-                    <motion.div
-                      initial={{ scaleX: 0, opacity: 0 }}
-                      animate={{ scaleX: 1, opacity: 1 }}
-                      exit={{ scaleX: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary-cyan origin-center"
-                      style={{
-                        boxShadow: '0 0 8px rgba(34, 211, 238, 0.8), 0 0 16px rgba(34, 211, 238, 0.4)'
-                      }}
-                    />
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-            <motion.a
-              href="#contact"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6 }}
-              className="btn-primary"
-            >
-              Cotizar Ahora
-            </motion.a>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-primary-cyan"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden mt-4 pt-4 border-t border-primary-cyan/20"
-          >
+          <div className="hidden lg:flex items-center gap-7">
             {menuItems.map((item) => (
               <div key={item.name} className="relative">
-                <a
+                <Link
                   href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block py-2 text-gray-300 hover:text-primary-cyan transition-colors duration-300 ${
-                    activeSection === item.id ? 'text-primary-cyan' : ''
+                  className={`text-sm font-medium transition-colors duration-300 ${
+                    isActive(item) ? 'text-primary-cyan' : 'text-gray-300 hover:text-white'
                   }`}
                 >
                   {item.name}
-                </a>
-                {activeSection === item.id && (
+                </Link>
+                {isActive(item) && (
                   <motion.div
-                    layoutId="mobile-underline"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-cyan"
-                    style={{
-                      boxShadow: '0 0 8px rgba(34, 211, 238, 0.8), 0 0 16px rgba(34, 211, 238, 0.4)'
-                    }}
+                    layoutId="nav-underline"
+                    className="absolute -bottom-1.5 left-0 right-0 h-0.5 bg-primary-cyan"
+                    style={{ boxShadow: '0 0 8px rgba(0,191,231,0.8)' }}
                   />
                 )}
               </div>
             ))}
-            <a href="#contact" className="btn-primary w-full mt-4 text-center">
+            <Link href="/#contact" className="btn-primary text-sm">
               Cotizar Ahora
-            </a>
-          </motion.div>
-        )}
+            </Link>
+          </div>
+
+          <button
+            className="lg:hidden text-primary-cyan p-2 -mr-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
+          >
+            {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+          </button>
+        </div>
+
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              id="mobile-menu"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden overflow-hidden -mx-4 md:-mx-8 mt-3 bg-dark-bg/98 backdrop-blur-xl border-t border-primary-cyan/20 shadow-2xl"
+            >
+              <div className="px-4 md:px-8 py-4 divide-y divide-primary-cyan/10">
+                {menuItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`block py-3.5 text-base font-medium transition-colors duration-200 ${
+                      isActive(item) ? 'text-primary-cyan' : 'text-gray-200 hover:text-primary-cyan'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+                <div className="pt-4">
+                  <Link
+                    href="/#contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="btn-primary w-full text-center block"
+                  >
+                    Cotizar Ahora
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.nav>
   )

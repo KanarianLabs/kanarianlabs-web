@@ -1,34 +1,65 @@
 import './globals.css'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
+import { Inter, Fira_Code } from 'next/font/google'
 import JsonLd from '@/components/JsonLd'
 
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+})
+
+const firaCode = Fira_Code({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-fira-code',
+  weight: ['400', '500', '600'],
+})
+
+const SITE_URL = 'https://kanarianlabs.com'
+const SITE_NAME = 'KanarianLabs'
+const DEFAULT_TITLE = 'KanarianLabs — Sitios Web y Automatizaciones n8n en Perú'
+const DEFAULT_DESCRIPTION = 'Diseño de sitios web, aplicaciones web y automatizaciones con n8n. Lanza rápido, vende más y automatiza procesos. Desde S/250. Lima, Perú.'
+
 export const metadata: Metadata = {
-  title: 'KanarianLabs - Desarrollo Web Profesional en Perú | Landing Pages desde S/250',
-  description: 'Desarrollo web profesional en Lima, Perú. Landing pages, sitios corporativos y tiendas online. Diseño responsive, optimizado y personalizado. 50% OFF lanzamiento. ¡Cotiza ahora!',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: DEFAULT_TITLE,
+    template: '%s | KanarianLabs',
+  },
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
   keywords: [
     'desarrollo web peru',
     'diseño web lima',
     'landing page peru',
-    'paginas web lima',
+    'aplicaciones web peru',
+    'automatizaciones n8n',
+    'n8n peru',
+    'automatizar negocio',
+    'integración de apis',
     'desarrollo web profesional',
-    'diseño web responsive',
+    'agencia web peru',
     'crear pagina web peru',
     'desarrollador web lima',
-    'agencia web peru',
-    'sitios web economicos peru'
   ],
-  authors: [{ name: 'Miguel Angel Ybañez Esquerre', url: 'https://kanarianlabs.com' }],
-  creator: 'KanarianLabs',
-  publisher: 'KanarianLabs',
-  metadataBase: new URL('https://kanarianlabs.com'),
+  authors: [{ name: 'Miguel Angel Ybañez Esquerre', url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   alternates: {
     canonical: '/',
+    languages: {
+      'es-PE': '/',
+      'es': '/',
+      'x-default': '/',
+    },
   },
   openGraph: {
-    title: 'KanarianLabs - Desarrollo Web Profesional en Perú',
-    description: 'Landing pages profesionales desde S/250. Diseño web moderno, responsive y optimizado para tu negocio.',
-    url: 'https://kanarianlabs.com',
-    siteName: 'KanarianLabs',
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
     locale: 'es_PE',
     type: 'website',
     images: [
@@ -36,20 +67,21 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'KanarianLabs - Desarrollo Web Profesional',
+        alt: 'KanarianLabs - Desarrollo Web y Automatizaciones',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KanarianLabs - Desarrollo Web Profesional en Perú',
-    description: 'Landing pages profesionales desde S/250. Diseño web moderno y optimizado.',
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
     images: ['/og-image.png'],
     creator: '@kanarianlabs',
   },
   robots: {
     index: true,
     follow: true,
+    nocache: false,
     googleBot: {
       index: true,
       follow: true,
@@ -59,8 +91,30 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'tu-codigo-de-verificacion-aqui',
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
+  manifest: '/manifest.webmanifest',
+  category: 'technology',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '1024x1024' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#0F1419' },
+    { media: '(prefers-color-scheme: dark)', color: '#0F1419' },
+  ],
+  colorScheme: 'dark',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 }
 
 export default function RootLayout({
@@ -69,11 +123,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es">
-      <head>
+    <html lang="es-PE" className={`${inter.variable} ${firaCode.variable}`}>
+      <body className="bg-dark-bg text-white antialiased font-sans">
+        <a href="#main-content" className="skip-link">Saltar al contenido principal</a>
         <JsonLd />
-      </head>
-      <body className="bg-dark-bg text-white antialiased">
         {children}
       </body>
     </html>

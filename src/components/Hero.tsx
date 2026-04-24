@@ -1,357 +1,248 @@
 'use client'
-import { motion } from 'framer-motion'
-import { ChevronDown, Check, Sparkles, Monitor, Zap, TrendingUp, Award, ShoppingBag, Globe, Palette, ArrowRight, Users } from 'lucide-react'
-import { useEffect, useState, useMemo } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { ChevronDown, Check, Sparkles, Zap, ArrowRight, Users, Workflow, Globe2, Cpu } from 'lucide-react'
+import { useMemo } from 'react'
 
 export default function Hero() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const reduceMotion = useReducedMotion()
 
-  // Memorize particles configuration to prevent re-rendering
   const particles = useMemo(() => {
-    return [...Array(20)].map((_, i) => ({
+    if (reduceMotion) return []
+    return [...Array(8)].map((_, i) => ({
       id: i,
-      initialX: Math.random() * 1920,
-      initialY: Math.random() * 1080,
-      animateX: Math.random() * 1920,
-      animateY: Math.random() * 1080,
-      duration: Math.random() * 20 + 10,
+      initialX: Math.random() * 100,
+      initialY: Math.random() * 100,
+      duration: Math.random() * 15 + 15,
     }))
-  }, [])
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 100,
-        y: (e.clientY / window.innerHeight) * 100,
-      })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+  }, [reduceMotion])
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden py-20">
-      {/* Animated Background */}
-      <div className="absolute inset-0 code-pattern opacity-5"></div>
+    <section
+      id="hero"
+      aria-labelledby="hero-heading"
+      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-28 pb-16 lg:pt-32 lg:pb-20"
+    >
+      <div className="absolute inset-0 code-pattern opacity-[0.04]" aria-hidden="true"></div>
 
-      {/* Blur Circles */}
-      <motion.div
-        animate={{
-          x: mousePosition.x - 50,
-          y: mousePosition.y - 50,
-        }}
-        transition={{ type: "spring", damping: 30 }}
-        className="blur-circle w-96 h-96 bg-primary-cyan top-0 left-0"
-      />
-      <motion.div
-        animate={{
-          x: -mousePosition.x + 50,
-          y: -mousePosition.y + 50,
-        }}
-        transition={{ type: "spring", damping: 30 }}
-        className="blur-circle w-96 h-96 bg-primary-yellow bottom-0 right-0"
-      />
+      <div className="blur-circle w-[28rem] h-[28rem] bg-primary-cyan -top-20 -left-20" aria-hidden="true" />
+      <div className="blur-circle w-[28rem] h-[28rem] bg-primary-yellow -bottom-20 -right-20" aria-hidden="true" />
 
-      {/* Floating Particles */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         {particles.map((particle) => (
           <motion.div
             key={particle.id}
-            initial={{
-              x: particle.initialX,
-              y: particle.initialY,
-            }}
+            initial={{ x: `${particle.initialX}vw`, y: `${particle.initialY}vh` }}
             animate={{
-              x: particle.animateX,
-              y: particle.animateY,
+              x: [`${particle.initialX}vw`, `${(particle.initialX + 30) % 100}vw`],
+              y: [`${particle.initialY}vh`, `${(particle.initialY + 30) % 100}vh`],
             }}
             transition={{
               duration: particle.duration,
               repeat: Infinity,
-              repeatType: "reverse",
+              repeatType: 'reverse',
+              ease: 'linear',
             }}
-            className="absolute w-1 h-1 bg-primary-cyan rounded-full opacity-50"
+            className="absolute w-1 h-1 bg-primary-cyan rounded-full opacity-40"
           />
         ))}
       </div>
 
-      {/* Content - Two Column Layout */}
       <div className="section-padding relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-14 items-center max-w-7xl mx-auto">
 
-          {/* Left Column - Content (F-Pattern) */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
             className="text-left"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight pb-2">
-              <span className="block text-gray-100">Transformamos Ideas en</span>
-              <span className="block bg-gradient-to-r from-primary-cyan via-primary-yellow to-green-400 bg-clip-text text-transparent">
-                Realidad Digital
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="inline-flex items-center gap-2 glass-effect px-4 py-1.5 rounded-full mb-6 text-xs md:text-sm"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span>
+              </span>
+              <span className="text-gray-300">Aceptando proyectos · Respuesta en 24h</span>
+            </motion.div>
+
+            <h1
+              id="hero-heading"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-extrabold mb-6 leading-[1.05] tracking-tight text-balance"
+            >
+              <span className="block text-white">Sitios web que venden.</span>
+              <span className="block bg-gradient-to-r from-primary-cyan via-teal-300 to-primary-yellow bg-clip-text text-transparent">
+                Automatizaciones que trabajan por ti.
               </span>
             </h1>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="text-lg md:text-xl text-gray-300 mb-8 max-w-xl"
+              transition={{ delay: 0.3 }}
+              className="text-base md:text-lg lg:text-xl text-gray-300 mb-8 max-w-xl text-balance"
             >
-              Landing pages que convierten visitas en clientes. Diseño web profesional para emprendimientos.
+              Construimos landing pages, aplicaciones web y flujos con{' '}
+              <span className="text-primary-cyan font-semibold">n8n</span>{' '}
+              para capturar, convertir y automatizar sin que toques un botón.
             </motion.p>
 
-            {/* Social Proof */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8"
+            >
+              <a
+                href="#contact"
+                className="btn-primary text-base md:text-lg inline-flex items-center justify-center group"
+                aria-label="Ir al formulario de cotización"
+              >
+                Cotizar mi proyecto
+                <ArrowRight size={20} className="ml-2 transition-transform group-hover:translate-x-1" />
+              </a>
+              <a
+                href="https://wa.me/51976999009?text=Hola%20Miguel,%20quiero%20cotizar%20un%20proyecto"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary text-base md:text-lg inline-flex items-center justify-center"
+                aria-label="Hablar por WhatsApp con Miguel"
+              >
+                Hablar por WhatsApp
+              </a>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.55 }}
               className="flex items-center gap-4 mb-8"
             >
-              <div className="flex -space-x-3">
-                {[...Array(4)].map((_, i) => (
+              <div className="flex -space-x-3" aria-hidden="true">
+                {['M', 'J', 'A', 'K'].map((letter) => (
                   <div
-                    key={i}
-                    className="w-10 h-10 rounded-full border-2 border-dark-800 bg-gradient-to-br from-primary-cyan to-primary-yellow flex items-center justify-center text-xs font-bold"
+                    key={letter}
+                    className="w-9 h-9 rounded-full border-2 border-dark-bg bg-gradient-to-br from-primary-cyan to-primary-yellow flex items-center justify-center text-xs font-bold text-dark-bg"
                   >
-                    {String.fromCharCode(65 + i)}
+                    {letter}
                   </div>
                 ))}
               </div>
               <div className="text-sm">
                 <p className="text-gray-300 flex items-center gap-1">
-                  <Users size={16} className="text-primary-cyan" />
-                  <span className="font-bold text-white">+50 Proyectos Entregados</span>
+                  <Users size={16} className="text-primary-cyan" aria-hidden="true" />
+                  <span className="font-bold text-white">+50 proyectos entregados</span>
                 </p>
-                <p className="text-gray-400 text-xs">Clientes satisfechos</p>
+                <p className="text-gray-500 text-xs">Perú · LatAm · España</p>
               </div>
             </motion.div>
 
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 mb-8"
-            >
-              <motion.a
-                href="#services"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-primary text-lg group inline-flex items-center justify-center"
-              >
-                Explorar Servicios
-                <motion.span
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="inline-block ml-2"
-                >
-                  <ArrowRight size={20} />
-                </motion.span>
-              </motion.a>
-              <motion.a
-                href="https://wa.me/51976999009?text=Hola%20Miguel,%20estoy%20interesado%20en%20una%20landing%20page%20profesional"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-secondary text-lg inline-flex items-center justify-center"
-              >
-                Hablar con Miguel
-              </motion.a>
-            </motion.div>
-
-            {/* Badges */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="flex flex-wrap gap-4 text-sm"
+              transition={{ delay: 0.7 }}
+              className="flex flex-wrap gap-2 md:gap-3 text-xs md:text-sm"
             >
-              <div className="flex items-center gap-2 glass-effect px-4 py-2 rounded-full">
-                <Check className="text-primary-cyan" size={18} />
-                <span>Desde S/250</span>
-              </div>
-              <div className="flex items-center gap-2 glass-effect px-4 py-2 rounded-full">
-                <Check className="text-primary-cyan" size={18} />
-                <span>Entrega 15 días</span>
-              </div>
-              <motion.div
-                animate={{
-                  scale: [1, 1.05, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="flex items-center gap-2 glass-effect px-4 py-2 rounded-full border border-primary-yellow/30"
-              >
-                <Sparkles className="text-primary-yellow" size={18} />
-                <span className="font-bold bg-gradient-to-r from-primary-yellow to-orange-400 bg-clip-text text-transparent">
-                  50% OFF - Oferta Limitada
-                </span>
-              </motion.div>
+              <span className="flex items-center gap-1.5 glass-effect px-3 py-1.5 rounded-full">
+                <Check className="text-primary-cyan" size={14} aria-hidden="true" />
+                Desde S/250
+              </span>
+              <span className="flex items-center gap-1.5 glass-effect px-3 py-1.5 rounded-full">
+                <Check className="text-primary-cyan" size={14} aria-hidden="true" />
+                Entrega en 15 días
+              </span>
+              <span className="flex items-center gap-1.5 glass-effect px-3 py-1.5 rounded-full border border-primary-yellow/40">
+                <Sparkles className="text-primary-yellow" size={14} aria-hidden="true" />
+                <span className="font-semibold text-primary-yellow">50% OFF lanzamiento</span>
+              </span>
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Visual Mockup */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative hidden lg:block"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="relative mt-4 lg:mt-0"
+            aria-hidden="true"
           >
-            {/* Browser Mockup */}
-            <div className="glass-effect rounded-xl overflow-hidden border border-primary-cyan/20 relative">
-              {/* Browser Header */}
-              <div className="bg-dark-900/80 border-b border-primary-cyan/10 p-3 flex items-center gap-2">
+            <div className="glass-effect rounded-2xl overflow-hidden border border-primary-cyan/20 shadow-[0_20px_60px_-20px_rgba(0,191,231,0.25)]">
+              <div className="bg-dark-bg/60 border-b border-primary-cyan/10 p-3 flex items-center gap-2">
                 <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                  <span className="w-3 h-3 rounded-full bg-red-500/80"></span>
+                  <span className="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                  <span className="w-3 h-3 rounded-full bg-green-500/80"></span>
                 </div>
-                <div className="flex-1 bg-dark-800/50 rounded px-3 py-1 text-xs text-gray-400 flex items-center gap-2">
-                  <Globe size={12} className="text-primary-cyan" />
-                  <span>kanarianlabs.com/projects</span>
+                <div className="flex-1 bg-dark-secondary/60 rounded px-3 py-1 text-[10px] md:text-xs text-gray-400 flex items-center gap-2 font-code">
+                  <Workflow size={12} className="text-primary-cyan" />
+                  <span>n8n · workflow/lead-capture</span>
                 </div>
               </div>
 
-              {/* Dashboard Content */}
-              <div className="p-6 space-y-6">
+              <div className="p-5 md:p-6 space-y-3 font-code text-xs md:text-sm">
+                {[
+                  { icon: Globe2, label: 'Form · kanarianlabs.com/contact', status: 'trigger', color: 'text-primary-cyan' },
+                  { icon: Cpu, label: 'IA · Califica lead (GPT-4)', status: 'running', color: 'text-primary-yellow' },
+                  { icon: Workflow, label: 'CRM · Crea contacto + tag', status: 'success', color: 'text-status-success' },
+                  { icon: Zap, label: 'WhatsApp · Notifica a Miguel', status: 'success', color: 'text-status-success' },
+                ].map((step, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 + idx * 0.12 }}
+                    className="flex items-center gap-3 glass-effect rounded-lg p-3 border border-primary-cyan/10"
+                  >
+                    <step.icon size={18} className={step.color} />
+                    <span className="text-gray-200 flex-1 truncate">{step.label}</span>
+                    <span className={`text-[10px] uppercase tracking-wider ${step.color}`}>
+                      {step.status}
+                    </span>
+                  </motion.div>
+                ))}
 
-                {/* Projects Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { icon: ShoppingBag, title: 'E-commerce', color: 'from-primary-cyan to-blue-500' },
-                    { icon: Globe, title: 'Landing Page', color: 'from-primary-yellow to-orange-400' },
-                    { icon: Palette, title: 'Portfolio', color: 'from-green-400 to-emerald-500' },
-                    { icon: Monitor, title: 'Corporate', color: 'from-purple-400 to-pink-500' },
-                  ].map((project, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.5 + idx * 0.1 }}
-                      whileHover={{ scale: 1.05, y: -5 }}
-                      className="glass-effect p-4 rounded-lg border border-primary-cyan/10 cursor-pointer group"
-                    >
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${project.color} flex items-center justify-center mb-2 group-hover:scale-110 transition-transform`}>
-                        <project.icon size={20} className="text-white" />
-                      </div>
-                      <p className="text-xs font-medium text-gray-300">{project.title}</p>
-                      <p className="text-[10px] text-gray-500">Completado</p>
-                    </motion.div>
-                  ))}
+                <div className="pt-2 flex items-center justify-between text-[10px] text-gray-500 border-t border-primary-cyan/10">
+                  <span>Ejecutado en 1.2s · sin errores</span>
+                  <span className="flex items-center gap-1 text-status-success">
+                    <span className="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>
+                    live
+                  </span>
                 </div>
-
-                {/* Metrics Bar */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9 }}
-                  className="glass-effect p-4 rounded-lg border border-primary-cyan/10 space-y-3"
-                >
-                  <p className="text-xs font-bold text-gray-300 flex items-center gap-2">
-                    <TrendingUp size={14} className="text-primary-cyan" />
-                    Métricas de Rendimiento
-                  </p>
-
-                  {[
-                    { label: 'Rendimiento', value: 98, color: 'bg-green-500' },
-                    { label: 'SEO', value: 95, color: 'bg-primary-cyan' },
-                    { label: 'Velocidad', value: 92, color: 'bg-primary-yellow' },
-                  ].map((metric, idx) => (
-                    <div key={idx}>
-                      <div className="flex justify-between text-[10px] text-gray-400 mb-1">
-                        <span>{metric.label}</span>
-                        <span className="font-bold text-white">{metric.value}%</span>
-                      </div>
-                      <div className="h-1.5 bg-dark-800 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${metric.value}%` }}
-                          transition={{ delay: 1 + idx * 0.2, duration: 1, ease: "easeOut" }}
-                          className={`h-full ${metric.color}`}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
               </div>
             </div>
 
-            {/* Floating Badge */}
             <motion.div
-              initial={{ opacity: 0, scale: 0, rotate: -20 }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                rotate: 0,
-              }}
-              transition={{
-                delay: 1.2,
-                type: "spring",
-                stiffness: 200,
-                damping: 15
-              }}
-              className="absolute -top-4 -right-4 glass-effect px-4 py-3 rounded-xl border border-green-400/30 shadow-lg"
+              initial={{ opacity: 0, scale: 0, rotate: -15 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ delay: 1.2, type: 'spring' }}
+              className="absolute -top-3 -right-3 glass-effect px-3 py-2 rounded-xl border border-primary-yellow/40 hidden sm:flex items-center gap-2"
             >
-              <div className="flex items-center gap-2">
-                <motion.div
-                  animate={{
-                    rotate: [0, 10, -10, 0],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <Award className="text-green-400" size={24} />
-                </motion.div>
-                <div>
-                  <p className="text-xs font-bold text-green-400">Proyecto</p>
-                  <p className="text-xs text-gray-300">Completado</p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Speed Badge */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.4 }}
-              className="absolute -bottom-4 -left-4 glass-effect px-4 py-3 rounded-xl border border-primary-cyan/30"
-            >
-              <div className="flex items-center gap-2">
-                <Zap className="text-primary-cyan" size={20} />
-                <div>
-                  <p className="text-xs font-bold text-primary-cyan">Velocidad A+</p>
-                  <p className="text-[10px] text-gray-400">Optimizado</p>
-                </div>
+              <Sparkles className="text-primary-yellow" size={18} />
+              <div>
+                <p className="text-[10px] font-bold text-primary-yellow leading-none">AUTOMATIZADO</p>
+                <p className="text-[10px] text-gray-400 leading-none mt-0.5">24/7 sin pausa</p>
               </div>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
-        <motion.div
+        <motion.a
+          href="#services"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, y: [0, 10, 0] }}
-          transition={{
-            opacity: { delay: 1.5 },
-            y: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
-          }}
-          className="absolute -bottom-12 left-1/2 transform -translate-x-1/2"
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="hidden md:flex absolute bottom-4 left-1/2 -translate-x-1/2 text-primary-cyan/70 hover:text-primary-cyan transition-colors"
+          aria-label="Ver servicios"
         >
-          <ChevronDown className="text-primary-cyan" size={32} />
-        </motion.div>
+          <motion.span
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown size={28} />
+          </motion.span>
+        </motion.a>
       </div>
     </section>
   )

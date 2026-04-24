@@ -32,8 +32,9 @@ module.exports = {
         }
       },
       fontFamily: {
-        primary: ['Inter', 'Poppins', '-apple-system', 'sans-serif'],
-        code: ['Fira Code', 'JetBrains Mono', 'Courier New', 'monospace'],
+        sans: ['var(--font-inter)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        primary: ['var(--font-inter)', 'Inter', '-apple-system', 'sans-serif'],
+        code: ['var(--font-fira-code)', 'Fira Code', 'JetBrains Mono', 'monospace'],
       },
       backgroundImage: {
         'gradient-primary': 'linear-gradient(135deg, #00BFE7 0%, #F4E86D 100%)',

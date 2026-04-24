@@ -47,7 +47,7 @@ export default function FAQ() {
   ]
 
   return (
-    <section className="py-20 relative bg-dark-secondary/30">
+    <section id="faq" aria-labelledby="faq-heading" className="py-20 relative bg-dark-secondary/30">
       <div className="section-padding w-full">
         <div className="max-w-7xl mx-auto">
         <motion.div
@@ -58,7 +58,7 @@ export default function FAQ() {
           className="text-center mb-16"
         >
           <HelpCircle className="text-primary-cyan mb-4 inline-block" size={64} />
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 id="faq-heading" className="text-4xl md:text-5xl font-bold mb-4">
             Preguntas <span className="gradient-text">Frecuentes</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">

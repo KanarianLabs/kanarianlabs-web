@@ -41,7 +41,7 @@ export default function Process() {
   ]
 
   return (
-    <section className="py-20 relative bg-dark-secondary/30">
+    <section id="process" aria-labelledby="process-heading" className="py-20 relative bg-dark-secondary/30">
       <div className="section-padding w-full">
         <div className="max-w-7xl mx-auto">
         <motion.div
@@ -52,7 +52,7 @@ export default function Process() {
           className="text-center mb-16"
         >
           <ClipboardList className="text-primary-cyan mb-4 inline-block" size={64} />
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 id="process-heading" className="text-4xl md:text-5xl font-bold mb-4">
             Proceso Simple en <span className="gradient-text">4 Pasos</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">

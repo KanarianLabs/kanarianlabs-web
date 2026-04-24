@@ -1,0 +1,26 @@
+{
+  "name": "KanarianLabs — Sitios Web y Automatizaciones",
+  "short_name": "KanarianLabs",
+  "description": "Diseño de sitios web, aplicaciones web y automatizaciones con n8n en Perú.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F1419",
+  "theme_color": "#0F1419",
+  "orientation": "portrait-primary",
+  "lang": "es-PE",
+  "categories": ["business", "productivity", "developer"],
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

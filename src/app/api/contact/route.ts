@@ -1,145 +1,139 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const RATE_LIMIT_WINDOW_MS = 60_000
+const RATE_LIMIT_MAX = 3
+const hits = new Map<string, { count: number; resetAt: number }>()
+
+function getClientIp(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for')
+  if (forwarded) return forwarded.split(',')[0].trim()
+  return request.headers.get('x-real-ip') || 'unknown'
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = hits.get(ip)
+  if (!entry || entry.resetAt < now) {
+    hits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
+    return false
+  }
+  entry.count += 1
+  if (entry.count > RATE_LIMIT_MAX) return true
+  return false
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { name, email, phone, type, message } = body
-
-    // Validación básica
-    if (!name || !email || !type || !message) {
+    const ip = getClientIp(request)
+    if (isRateLimited(ip)) {
       return NextResponse.json(
-        { error: 'Faltan campos requeridos' },
+        { error: 'Demasiadas solicitudes. Intenta en unos minutos.' },
+        { status: 429 }
+      )
+    }
+
+    const body = await request.json()
+    const { name, email, phone, type, message, website } = body
+
+    // Honeypot: si el campo "website" viene lleno, es un bot
+    if (website) {
+      return NextResponse.json({ message: 'ok' }, { status: 200 })
+    }
+
+    if (!name || !email || !type || !message) {
+      return NextResponse.json({ error: 'Faltan campos requeridos' }, { status: 400 })
+    }
+
+    if (typeof name !== 'string' || name.length > 100) {
+      return NextResponse.json({ error: 'Nombre inválido' }, { status: 400 })
+    }
+    if (typeof email !== 'string' || !EMAIL_REGEX.test(email) || email.length > 150) {
+      return NextResponse.json({ error: 'Email inválido' }, { status: 400 })
+    }
+    if (typeof message !== 'string' || message.length < 10 || message.length > 3000) {
+      return NextResponse.json(
+        { error: 'El mensaje debe tener entre 10 y 3000 caracteres' },
         { status: 400 }
       )
     }
 
-    // Configuración del transportador SMTP
-    // IMPORTANTE: Configura estas variables de entorno en tu archivo .env.local
+    const cleanName = escapeHtml(name.trim())
+    const cleanEmail = escapeHtml(email.trim())
+    const cleanPhone = phone ? escapeHtml(String(phone).trim()) : ''
+    const cleanType = escapeHtml(String(type).trim())
+    const cleanMessage = escapeHtml(message.trim())
+
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error('SMTP credentials not configured')
+      return NextResponse.json(
+        { error: 'Servicio de correo no configurado. Contáctanos por WhatsApp.' },
+        { status: 500 }
+      )
+    }
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.hostinger.com',
       port: parseInt(process.env.SMTP_PORT || '465'),
-      secure: true, // true para 465, false para otros puertos
+      secure: true,
       auth: {
-        user: process.env.SMTP_USER, // Tu correo corporativo (ej: contacto@kanarianlabs.com)
-        pass: process.env.SMTP_PASS, // Tu contraseña del correo
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     })
 
-    // Contenido del email
-    const mailOptions = {
-      from: process.env.SMTP_USER, // Remitente (tu correo corporativo)
-      to: process.env.NOTIFICATION_EMAIL, // Tu correo personal donde recibirás las notificaciones
-      replyTo: email, // Email del cliente para que puedas responder directamente
-      subject: `Nueva consulta de ${name} - KanarianLabs`,
+    await transporter.sendMail({
+      from: `"KanarianLabs Web" <${process.env.SMTP_USER}>`,
+      to: process.env.NOTIFICATION_EMAIL || process.env.SMTP_USER,
+      replyTo: email,
+      subject: `🟢 Nueva consulta — ${cleanName} (${cleanType})`,
       html: `
         <!DOCTYPE html>
         <html>
-        <head>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              line-height: 1.6;
-              color: #333;
-            }
-            .container {
-              max-width: 600px;
-              margin: 0 auto;
-              padding: 20px;
-              background-color: #f4f4f4;
-            }
-            .header {
-              background: linear-gradient(135deg, #22d3ee 0%, #bef264 100%);
-              padding: 20px;
-              text-align: center;
-              border-radius: 10px 10px 0 0;
-            }
-            .header h1 {
-              color: white;
-              margin: 0;
-            }
-            .content {
-              background: white;
-              padding: 30px;
-              border-radius: 0 0 10px 10px;
-            }
-            .field {
-              margin-bottom: 15px;
-              padding: 10px;
-              background-color: #f9f9f9;
-              border-left: 4px solid #22d3ee;
-            }
-            .field strong {
-              color: #22d3ee;
-            }
-            .footer {
-              text-align: center;
-              margin-top: 20px;
-              color: #666;
-              font-size: 12px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>🚀 Nueva Consulta - KanarianLabs</h1>
-            </div>
-            <div class="content">
-              <p>Has recibido una nueva consulta desde tu sitio web:</p>
-
-              <div class="field">
-                <strong>👤 Nombre:</strong><br/>
-                ${name}
+          <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f4f4f4;margin:0;padding:20px;">
+            <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)">
+              <div style="background:linear-gradient(135deg,#00BFE7 0%,#F4E86D 100%);padding:24px;text-align:center;">
+                <h1 style="color:#0F1419;margin:0;font-size:22px;">🚀 Nueva consulta — KanarianLabs</h1>
               </div>
-
-              <div class="field">
-                <strong>📧 Email:</strong><br/>
-                <a href="mailto:${email}">${email}</a>
+              <div style="padding:28px">
+                <p style="margin:0 0 20px;color:#333">Llegó un lead desde tu sitio web:</p>
+                <table style="width:100%;border-collapse:collapse">
+                  <tr><td style="padding:10px 12px;background:#f9f9f9;border-left:3px solid #00BFE7"><strong>👤 Nombre</strong><br/>${cleanName}</td></tr>
+                  <tr><td style="padding:10px 12px;background:#f9f9f9;border-left:3px solid #00BFE7;margin-top:6px"><strong>📧 Email</strong><br/><a href="mailto:${cleanEmail}">${cleanEmail}</a></td></tr>
+                  ${cleanPhone ? `<tr><td style="padding:10px 12px;background:#f9f9f9;border-left:3px solid #00BFE7"><strong>📱 WhatsApp</strong><br/><a href="https://wa.me/${cleanPhone.replace(/\D/g, '')}">${cleanPhone}</a></td></tr>` : ''}
+                  <tr><td style="padding:10px 12px;background:#f9f9f9;border-left:3px solid #00BFE7"><strong>🏢 Tipo</strong><br/>${cleanType}</td></tr>
+                  <tr><td style="padding:10px 12px;background:#f9f9f9;border-left:3px solid #00BFE7"><strong>💬 Mensaje</strong><br/>${cleanMessage.replace(/\n/g, '<br/>')}</td></tr>
+                </table>
+                <div style="margin-top:24px;padding:14px;background:#FEF3C7;border-left:3px solid #F59E0B;border-radius:4px">
+                  <strong style="color:#92400E">⚡ Responde en menos de 30 min</strong><br/>
+                  <span style="color:#78350F;font-size:13px">Los leads que reciben respuesta rápida convierten 7x mejor.</span>
+                </div>
               </div>
-
-              ${phone ? `
-              <div class="field">
-                <strong>📱 WhatsApp:</strong><br/>
-                <a href="https://wa.me/${phone.replace(/\D/g, '')}">${phone}</a>
-              </div>
-              ` : ''}
-
-              <div class="field">
-                <strong>🏢 Tipo de cliente:</strong><br/>
-                ${type.charAt(0).toUpperCase() + type.slice(1)}
-              </div>
-
-              <div class="field">
-                <strong>💬 Mensaje:</strong><br/>
-                ${message.replace(/\n/g, '<br/>')}
-              </div>
-
-              <div style="margin-top: 30px; padding: 20px; background-color: #fff7ed; border-left: 4px solid #fb923c; border-radius: 5px;">
-                <strong style="color: #fb923c;">⚡ Acción requerida:</strong><br/>
-                Responde lo antes posible para mantener el interés del cliente.
+              <div style="padding:14px;text-align:center;color:#999;font-size:11px;background:#fafafa">
+                Enviado automáticamente desde kanarianlabs.com · IP: ${ip}
               </div>
             </div>
-            <div class="footer">
-              <p>Este correo fue enviado automáticamente desde el formulario de contacto de KanarianLabs.com</p>
-            </div>
-          </div>
-        </body>
+          </body>
         </html>
       `,
-    }
+      text: `Nueva consulta en KanarianLabs\n\nNombre: ${name}\nEmail: ${email}\n${phone ? `WhatsApp: ${phone}\n` : ''}Tipo: ${type}\n\nMensaje:\n${message}\n\n--\nResponder a: ${email}`,
+    })
 
-    // Enviar el correo
-    await transporter.sendMail(mailOptions)
-
-    return NextResponse.json(
-      { message: 'Mensaje enviado exitosamente' },
-      { status: 200 }
-    )
+    return NextResponse.json({ message: 'Mensaje enviado exitosamente' }, { status: 200 })
   } catch (error) {
-    console.error('Error al enviar el correo:', error)
+    console.error('Contact form error:', error)
     return NextResponse.json(
-      { error: 'Error al enviar el mensaje. Por favor intenta de nuevo.' },
+      { error: 'Error al enviar el mensaje. Por favor intenta de nuevo o escríbenos por WhatsApp.' },
       { status: 500 }
     )
   }

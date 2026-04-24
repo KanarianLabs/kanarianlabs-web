@@ -2,7 +2,8 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { MessageCircle, Mail } from 'lucide-react'
-import { useState, useEffect, FormEvent } from 'react'
+import { useState, FormEvent } from 'react'
+import Image from 'next/image'
 
 export default function CTA() {
   const { ref, inView } = useInView({
@@ -15,7 +16,8 @@ export default function CTA() {
     email: '',
     phone: '',
     type: '',
-    message: ''
+    message: '',
+    website: '', // honeypot — debe quedar vacío
   })
 
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
@@ -37,7 +39,7 @@ export default function CTA() {
 
       if (response.ok) {
         setFormStatus('success')
-        setFormData({ name: '', email: '', phone: '', type: '', message: '' })
+        setFormData({ name: '', email: '', phone: '', type: '', message: '', website: '' })
         // Reset after 5 seconds
         setTimeout(() => setFormStatus('idle'), 5000)
       } else {
@@ -59,7 +61,7 @@ export default function CTA() {
   }
 
   return (
-    <section id="contact" className="py-20 relative overflow-hidden">
+    <section id="contact" aria-labelledby="contact-heading" className="py-20 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-primary opacity-10"></div>
       <div className="absolute inset-0">
@@ -83,14 +85,16 @@ export default function CTA() {
             transition={{ duration: 1, type: "spring" }}
             className="mb-8 inline-block"
           >
-            <img
+            <Image
               src="/logo.png"
-              alt="KanarianLabs"
-              className="w-32 h-auto animate-float"
+              alt=""
+              width={128}
+              height={128}
+              className="w-32 h-32 animate-float"
             />
           </motion.div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          <h2 id="contact-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             ¿Listo para llevar tu negocio al{' '}
             <span className="gradient-text">siguiente nivel</span>?
           </h2>
@@ -133,7 +137,20 @@ export default function CTA() {
               <h3 className="text-2xl font-bold mb-2 text-center">O envía tu consulta</h3>
               <p className="text-gray-400 text-center mb-6">Te responderemos en menos de 24 horas</p>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                {/* Honeypot anti-bot — oculto para humanos */}
+                <div aria-hidden="true" className="absolute left-[-9999px] w-0 h-0 overflow-hidden">
+                  <label htmlFor="website">No llenar este campo</label>
+                  <input
+                    type="text"
+                    id="website"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.website}
+                    onChange={handleChange}
+                  />
+                </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2 text-left">

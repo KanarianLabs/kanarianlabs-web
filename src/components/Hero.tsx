@@ -85,9 +85,9 @@ export default function Hero() {
               transition={{ delay: 0.3 }}
               className="text-base md:text-lg lg:text-xl text-gray-300 mb-8 max-w-xl text-balance"
             >
-              Construimos landing pages, aplicaciones web y flujos con{' '}
-              <span className="text-primary-cyan font-semibold">n8n</span>{' '}
-              para capturar, convertir y automatizar sin que toques un botón.
+              Landings, e-commerce y aplicaciones web a medida.{' '}
+              <span className="text-primary-cyan font-semibold">Diseño exclusivo</span>{' '}
+              que carga rápido y vende. Entregamos en 15 días o menos.
             </motion.p>
 
             <motion.div
@@ -137,6 +137,10 @@ export default function Hero() {
                   <span className="font-bold text-white">+50 proyectos entregados</span>
                 </p>
                 <p className="text-gray-500 text-xs">Perú · LatAm · España</p>
+                <p className="text-primary-yellow text-xs mt-1 font-semibold flex items-center gap-1">
+                  <Zap size={12} aria-hidden="true" />
+                  Web rápida · Sin mantenimiento mensual
+                </p>
               </div>
             </motion.div>
 
@@ -148,7 +152,7 @@ export default function Hero() {
             >
               <span className="flex items-center gap-1.5 glass-effect px-3 py-1.5 rounded-full">
                 <Check className="text-primary-cyan" size={14} aria-hidden="true" />
-                Desde S/250
+                Desde S/350
               </span>
               <span className="flex items-center gap-1.5 glass-effect px-3 py-1.5 rounded-full">
                 <Check className="text-primary-cyan" size={14} aria-hidden="true" />

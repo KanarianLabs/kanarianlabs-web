@@ -19,8 +19,8 @@ const firaCode = Fira_Code({
 
 const SITE_URL = 'https://kanarianlabs.com'
 const SITE_NAME = 'KanarianLabs'
-const DEFAULT_TITLE = 'KanarianLabs — Sitios Web y Automatizaciones n8n en Perú'
-const DEFAULT_DESCRIPTION = 'Diseño de sitios web, aplicaciones web y automatizaciones con n8n. Lanza rápido, vende más y automatiza procesos. Desde S/250. Lima, Perú.'
+const DEFAULT_TITLE = 'KanarianLabs — Sitios Web, E-commerce y Automatizaciones n8n en Lima'
+const DEFAULT_DESCRIPTION = 'Diseño de sitios web, tiendas online y aplicaciones web a medida. Carga rápido, sin plantillas. Entregamos en 15 días. Desde S/350. Lima, Perú.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -34,6 +34,9 @@ export const metadata: Metadata = {
     'desarrollo web peru',
     'diseño web lima',
     'landing page peru',
+    'tienda online peru',
+    'ecommerce peru',
+    'ecommerce lima',
     'aplicaciones web peru',
     'automatizaciones n8n',
     'n8n peru',
@@ -43,6 +46,8 @@ export const metadata: Metadata = {
     'agencia web peru',
     'crear pagina web peru',
     'desarrollador web lima',
+    'next.js peru',
+    'mercado pago integracion',
   ],
   authors: [{ name: 'Miguel Angel Ybañez Esquerre', url: SITE_URL }],
   creator: SITE_NAME,

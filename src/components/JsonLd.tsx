@@ -18,7 +18,7 @@ export default function JsonLd() {
     image: `${SITE_URL}/og-image.png`,
     telephone: '+51-976-999-009',
     email: 'miguel@kanarianlabs.com',
-    priceRange: 'S/250 - S/1200+',
+    priceRange: 'S/350 - S/2500+',
     founder: {
       '@type': 'Person',
       name: 'Miguel Angel Ybañez Esquerre',
@@ -54,13 +54,18 @@ export default function JsonLd() {
     knowsAbout: [
       'Desarrollo Web',
       'Landing Pages',
+      'Tiendas Online',
+      'E-commerce',
       'Aplicaciones Web',
       'Automatización con n8n',
       'Integración de APIs',
-      'SEO',
-      'WordPress',
+      'SEO Local',
       'Next.js',
       'React',
+      'TypeScript',
+      'Mercado Pago',
+      'Culqi',
+      'Niubiz',
     ],
     aggregateRating: {
       '@type': 'AggregateRating',
@@ -80,7 +85,7 @@ export default function JsonLd() {
             name: 'Landing Page Profesional',
             description: 'Landing page responsive con diseño personalizado, formulario y SEO básico.',
           },
-          price: '250',
+          price: '350',
           priceCurrency: 'PEN',
         },
         {
@@ -90,7 +95,7 @@ export default function JsonLd() {
             name: 'Sitio Web Corporativo',
             description: 'Sitio multi-página (5-6 secciones) con blog, SEO completo y formulario avanzado.',
           },
-          price: '400',
+          price: '500',
           priceCurrency: 'PEN',
         },
         {
@@ -98,9 +103,19 @@ export default function JsonLd() {
           itemOffered: {
             '@type': 'Service',
             name: 'Web Premium / Aplicación Web',
-            description: 'Sitio o aplicación web a medida con múltiples páginas, 3D, multi-idioma y Analytics.',
+            description: 'Sitio o aplicación web a medida con múltiples páginas, multi-idioma y Analytics.',
           },
-          price: '600',
+          price: '750',
+          priceCurrency: 'PEN',
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Tienda Online E-commerce',
+            description: 'E-commerce a medida en Next.js con catálogo, pasarela de pago (Mercado Pago, Culqi, Niubiz), panel admin e integración WhatsApp Business.',
+          },
+          price: '900',
           priceCurrency: 'PEN',
         },
         {
@@ -117,13 +132,13 @@ export default function JsonLd() {
           itemOffered: {
             '@type': 'Service',
             name: 'Hosting y Soporte Mensual',
-            description: 'Hosting profesional con SSL, backups y cambios ilimitados.',
+            description: 'Hosting profesional con SSL, backups y cambios incluidos.',
           },
-          price: '20',
+          price: '25',
           priceCurrency: 'PEN',
           priceSpecification: {
             '@type': 'UnitPriceSpecification',
-            price: '20',
+            price: '25',
             priceCurrency: 'PEN',
             unitText: 'MONTH',
           },
@@ -146,6 +161,22 @@ export default function JsonLd() {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
+      {
+        '@type': 'Question',
+        name: '¿Por qué tu web es más rápida que otras?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Diseñamos cada web a medida, sin plantillas pesadas ni plugins que se rompan. Tu sitio carga en menos de 2 segundos, posiciona mejor en Google y no necesita mantenimiento mensual para seguir funcionando bien.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Cuánto cuesta un e-commerce o tienda online?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Depende de la cantidad de productos y funcionalidades. Una tienda con catálogo de hasta 50 productos, pasarela de pago (Mercado Pago, Culqi, Niubiz) y panel admin arranca desde S/900 con la promo de lanzamiento. Para tiendas más grandes cotizamos a medida.',
+        },
+      },
       {
         '@type': 'Question',
         name: '¿Qué incluye una landing page?',

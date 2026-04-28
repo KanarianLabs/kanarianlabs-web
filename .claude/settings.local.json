@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(file *)",
+      "Bash(npm uninstall *)",
+      "Bash(npx tsc *)",
+      "Bash(grep -E \"^\\\\.env\\\\*?$|^\\\\!\\\\.env\\\\.example\" .gitignore)",
+      "Bash(python *)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} · %{size_download} bytes · %{time_total}s\\\\n\" http://localhost:3001/)",
+      "Bash(curl -s http://localhost:3001/)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3001/)"
+    ]
+  }
+}

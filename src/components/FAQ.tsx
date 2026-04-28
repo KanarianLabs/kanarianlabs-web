@@ -13,6 +13,14 @@ export default function FAQ() {
 
   const faqs = [
     {
+      question: "¿Por qué tu web es más rápida que otras?",
+      answer: "Diseñamos cada web a medida, sin plantillas pesadas ni plugins que se rompan. El resultado: tu sitio carga en menos de 2 segundos, posiciona mejor en Google y no necesita mantenimiento mensual para seguir funcionando bien."
+    },
+    {
+      question: "¿Cuánto cuesta un e-commerce / tienda online?",
+      answer: "Depende de la cantidad de productos y funcionalidades. Como referencia, una tienda con catálogo de hasta 50 productos, pasarela de pago (Mercado Pago, Culqi o Niubiz) y panel para gestionar inventario arranca desde S/900 con la promo de lanzamiento. Para tiendas más grandes o con integraciones específicas (SUNAT, ERPs, etc) cotizamos a medida."
+    },
+    {
       question: "¿Qué incluye una landing page?",
       answer: "Una landing page incluye diseño personalizado, desarrollo responsive para todos los dispositivos, formularios de contacto, optimización SEO básica, integración con redes sociales, y hosting por el primer mes. Todo el contenido que proporciones será implementado de manera profesional."
     },

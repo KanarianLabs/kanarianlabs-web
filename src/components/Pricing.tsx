@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { Check, Star, Zap, Server, LifeBuoy, Crown } from 'lucide-react'
+import { Check, Star, Zap, Server, LifeBuoy, Crown, ShoppingBag } from 'lucide-react'
 
 export default function Pricing() {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
@@ -9,8 +9,8 @@ export default function Pricing() {
   const plans = [
     {
       name: 'BÁSICO',
-      originalPrice: 'S/700',
-      price: 'S/250',
+      originalPrice: 'S/750',
+      price: 'S/350',
       description: 'Para emprender con pie derecho en internet.',
       subtitle: 'Landing Page de 1 página',
       features: [
@@ -22,11 +22,12 @@ export default function Pricing() {
         'SEO básico on-page',
       ],
       popular: false,
+      isEcommerce: false,
     },
     {
       name: 'ESTÁNDAR',
       originalPrice: 'S/1,200',
-      price: 'S/400',
+      price: 'S/500',
       description: 'La opción que eligen 7 de cada 10 clientes.',
       subtitle: 'Sitio web multi-página',
       features: [
@@ -41,11 +42,12 @@ export default function Pricing() {
         'Código fuente incluido',
       ],
       popular: true,
+      isEcommerce: false,
     },
     {
       name: 'PREMIUM',
       originalPrice: 'S/2,000+',
-      price: 'S/600+',
+      price: 'S/750+',
       description: 'Para marcas que quieren destacar en serio.',
       subtitle: 'Web completa · sub-páginas · apps',
       features: [
@@ -61,6 +63,28 @@ export default function Pricing() {
         'Código fuente incluido',
       ],
       popular: false,
+      isEcommerce: false,
+    },
+    {
+      name: 'E-COMMERCE',
+      originalPrice: 'S/2,500',
+      price: 'Desde S/900',
+      description: 'Para marcas que venden online en serio.',
+      subtitle: 'Tienda online a medida',
+      features: [
+        'Catálogo de productos ilimitado',
+        'Pasarela de pago (Mercado Pago, Culqi, Niubiz)',
+        'Carrito + checkout optimizado',
+        'Panel admin para gestionar inventario',
+        'Integración WhatsApp Business',
+        'SEO técnico + Google Shopping',
+        'Multi-idioma (ES/EN)',
+        'Diseño 100% a medida y exclusivo',
+        'Hosting + dominio primer mes',
+        'Código fuente entregado',
+      ],
+      popular: false,
+      isEcommerce: true,
     },
   ]
 
@@ -143,7 +167,7 @@ export default function Pricing() {
             </motion.div>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-7">
             {plans.map((plan, index) => (
               <motion.article
                 key={plan.name}
@@ -162,18 +186,29 @@ export default function Pricing() {
                   </div>
                 )}
 
+                {plan.isEcommerce && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                    <div className="bg-primary-yellow text-dark-bg px-4 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+                      <ShoppingBag size={14} />
+                      NUEVO · E-COMMERCE
+                    </div>
+                  </div>
+                )}
+
                 <div
-                  className={`glass-effect rounded-2xl p-7 md:p-8 h-full flex flex-col transition-all duration-300 ${
+                  className={`glass-effect rounded-2xl p-6 md:p-7 h-full flex flex-col transition-all duration-300 ${
                     plan.popular
                       ? 'border-2 border-primary-cyan shadow-[0_20px_60px_-20px_rgba(0,191,231,0.4)]'
-                      : 'border border-primary-cyan/20 hover:border-primary-cyan/50'
+                      : plan.isEcommerce
+                        ? 'border-2 border-primary-yellow/70 shadow-[0_20px_60px_-20px_rgba(255,200,0,0.3)]'
+                        : 'border border-primary-cyan/20 hover:border-primary-cyan/50'
                   }`}
                 >
                   <h3 className="text-xl md:text-2xl font-bold mb-1 text-white">{plan.name}</h3>
                   <p className="text-sm text-primary-cyan font-semibold mb-4">{plan.subtitle}</p>
 
-                  <div className="mb-2 flex items-baseline gap-2">
-                    <span className="text-4xl md:text-5xl font-extrabold gradient-text">{plan.price}</span>
+                  <div className="mb-2 flex items-baseline gap-2 flex-wrap">
+                    <span className="text-3xl md:text-4xl font-extrabold gradient-text">{plan.price}</span>
                     <span className="text-base text-gray-500 line-through">{plan.originalPrice}</span>
                   </div>
                   <p className="text-sm text-gray-400 mb-6">{plan.description}</p>
@@ -189,9 +224,9 @@ export default function Pricing() {
 
                   <a
                     href="#contact"
-                    className={`w-full text-center ${plan.popular ? 'btn-primary' : 'btn-secondary'}`}
+                    className={`w-full text-center ${plan.popular || plan.isEcommerce ? 'btn-primary' : 'btn-secondary'}`}
                   >
-                    Cotizar Ahora
+                    {plan.isEcommerce ? 'Cotizar mi tienda' : 'Cotizar Ahora'}
                   </a>
                 </div>
 

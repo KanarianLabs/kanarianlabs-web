@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { MessageCircle, Mail } from 'lucide-react'
+import { MessageCircle, Mail, Phone } from 'lucide-react'
 import { useState, FormEvent } from 'react'
 import Image from 'next/image'
 
@@ -123,6 +123,14 @@ export default function CTA() {
             >
               <MessageCircle size={20} />
               Hablar por WhatsApp
+            </a>
+            <a
+              href="tel:+51976999009"
+              className="btn-secondary text-lg flex items-center gap-2 justify-center"
+              aria-label="Llamar al +51 976 999 009"
+            >
+              <Phone size={20} />
+              Llamar al +51 976 999 009
             </a>
           </motion.div>
 

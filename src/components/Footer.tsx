@@ -99,21 +99,15 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-lg mb-4 gradient-text">Servicios</h3>
             <ul className="space-y-2">
-              {footerLinks.services.map((link, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
+              {footerLinks.services.map((link) => (
+                <li key={link.name}>
                   <a
                     href={link.href}
                     className="text-gray-400 hover:text-primary-cyan transition-colors duration-300 text-sm"
                   >
                     {link.name}
                   </a>
-                </motion.li>
+                </li>
               ))}
             </ul>
           </div>
@@ -122,21 +116,15 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-lg mb-4 gradient-text">Legal</h3>
             <ul className="space-y-2">
-              {footerLinks.legal.map((link, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
+              {footerLinks.legal.map((link) => (
+                <li key={link.name}>
                   <a
                     href={link.href}
                     className="text-gray-400 hover:text-primary-cyan transition-colors duration-300 text-sm flex items-center gap-1"
                   >
                     {link.name}
                   </a>
-                </motion.li>
+                </li>
               ))}
             </ul>
           </div>
@@ -145,14 +133,8 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-lg mb-4 gradient-text">Contacto</h3>
             <ul className="space-y-3">
-              {footerLinks.contact.map((item, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
+              {footerLinks.contact.map((item) => (
+                <li key={item.text}>
                   <a
                     href={item.href}
                     className="text-gray-400 hover:text-primary-cyan transition-colors duration-300 text-sm flex items-center gap-2"
@@ -160,7 +142,7 @@ export default function Footer() {
                     {item.icon}
                     {item.text}
                   </a>
-                </motion.li>
+                </li>
               ))}
             </ul>
           </div>

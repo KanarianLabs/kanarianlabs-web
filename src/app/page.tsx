@@ -1,15 +1,17 @@
 'use client'
+import dynamic from 'next/dynamic'
 import PromoBanner from '@/components/PromoBanner'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
-import Automations from '@/components/Automations'
-import Process from '@/components/Process'
-import Pricing from '@/components/Pricing'
-import FAQ from '@/components/FAQ'
-import CTA from '@/components/CTA'
-import Footer from '@/components/Footer'
-import WhatsAppBubble from '@/components/WhatsAppBubble'
+
+const Automations = dynamic(() => import('@/components/Automations'), { ssr: true })
+const Process = dynamic(() => import('@/components/Process'), { ssr: true })
+const Pricing = dynamic(() => import('@/components/Pricing'), { ssr: true })
+const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: true })
+const CTA = dynamic(() => import('@/components/CTA'), { ssr: true })
+const Footer = dynamic(() => import('@/components/Footer'), { ssr: true })
+const WhatsAppBubble = dynamic(() => import('@/components/WhatsAppBubble'), { ssr: false })
 
 export default function Home() {
   return (

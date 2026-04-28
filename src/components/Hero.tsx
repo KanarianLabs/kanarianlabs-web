@@ -1,21 +1,8 @@
 'use client'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ChevronDown, Check, Sparkles, Zap, ArrowRight, Users, Workflow, Globe2, Cpu } from 'lucide-react'
-import { useMemo } from 'react'
 
 export default function Hero() {
-  const reduceMotion = useReducedMotion()
-
-  const particles = useMemo(() => {
-    if (reduceMotion) return []
-    return [...Array(8)].map((_, i) => ({
-      id: i,
-      initialX: Math.random() * 100,
-      initialY: Math.random() * 100,
-      duration: Math.random() * 15 + 15,
-    }))
-  }, [reduceMotion])
-
   return (
     <section
       id="hero"
@@ -26,26 +13,6 @@ export default function Hero() {
 
       <div className="blur-circle w-[28rem] h-[28rem] bg-primary-cyan -top-20 -left-20" aria-hidden="true" />
       <div className="blur-circle w-[28rem] h-[28rem] bg-primary-yellow -bottom-20 -right-20" aria-hidden="true" />
-
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {particles.map((particle) => (
-          <motion.div
-            key={particle.id}
-            initial={{ x: `${particle.initialX}vw`, y: `${particle.initialY}vh` }}
-            animate={{
-              x: [`${particle.initialX}vw`, `${(particle.initialX + 30) % 100}vw`],
-              y: [`${particle.initialY}vh`, `${(particle.initialY + 30) % 100}vh`],
-            }}
-            transition={{
-              duration: particle.duration,
-              repeat: Infinity,
-              repeatType: 'reverse',
-              ease: 'linear',
-            }}
-            className="absolute w-1 h-1 bg-primary-cyan rounded-full opacity-40"
-          />
-        ))}
-      </div>
 
       <div className="section-padding relative z-10 w-full">
         <div className="grid lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-14 items-center max-w-7xl mx-auto">

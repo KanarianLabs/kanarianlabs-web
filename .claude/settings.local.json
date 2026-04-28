@@ -10,7 +10,15 @@
       "Bash(python *)",
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} · %{size_download} bytes · %{time_total}s\\\\n\" http://localhost:3001/)",
       "Bash(curl -s http://localhost:3001/)",
-      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3001/)"
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3001/)",
+      "Bash(PORT=3002 npm run *)",
+      "Bash(curl -s -o /tmp/page.html -w \"HTTP %{http_code} | %{size_download} bytes | %{time_total}s\\\\n\" http://localhost:3002/)",
+      "Bash(curl -s http://localhost:3002/)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //PID 35512 //F)",
+      "Bash(taskkill //PID 18800 //F)",
+      "Bash(PORT=3003 npm run start)",
+      "Bash(curl -s http://localhost:3003/)"
     ]
   }
 }

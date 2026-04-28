@@ -45,27 +45,6 @@ export default function Pricing() {
       isEcommerce: false,
     },
     {
-      name: 'PREMIUM',
-      originalPrice: 'S/2,000+',
-      price: 'S/750+',
-      description: 'Para marcas que quieren destacar en serio.',
-      subtitle: 'Web completa · sub-páginas · apps',
-      features: [
-        'Múltiples páginas + sub-páginas',
-        'Diseño 100% a medida',
-        '3 rondas de revisión',
-        'Entrega según estimación',
-        'Múltiples formularios',
-        'SEO avanzado + Search Console',
-        'Blog integrado',
-        'Google Analytics 4',
-        'Multi-idioma',
-        'Código fuente incluido',
-      ],
-      popular: false,
-      isEcommerce: false,
-    },
-    {
       name: 'E-COMMERCE',
       originalPrice: 'S/2,500',
       price: 'Desde S/900',
@@ -167,7 +146,7 @@ export default function Pricing() {
             </motion.div>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-7">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {plans.map((plan, index) => (
               <motion.article
                 key={plan.name}
@@ -237,7 +216,7 @@ export default function Pricing() {
             ))}
           </div>
 
-          {/* CTA for complex projects */}
+          {/* CTA for complex projects (PREMIUM, dashboards, n8n) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -245,11 +224,14 @@ export default function Pricing() {
             className="mt-16 glass-effect rounded-2xl p-8 md:p-10 text-center border border-primary-yellow/30"
           >
             <h3 className="text-2xl md:text-3xl font-bold mb-3">
-              ¿Aplicación web, ecommerce o{' '}
+              ¿Web Premium, dashboard interno o{' '}
               <span className="gradient-text">automatización con n8n</span>?
             </h3>
-            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-              Esos proyectos los cotizamos a medida según alcance. Sin plantillas, sin sorpresas.
+            <p className="text-gray-300 mb-2 max-w-2xl mx-auto">
+              Web completa con sub-páginas, multi-idioma, aplicaciones a medida o flujos n8n.
+            </p>
+            <p className="text-gray-400 mb-6 text-sm max-w-2xl mx-auto">
+              <span className="text-primary-yellow font-semibold">Desde S/750+</span> · Cotizamos según alcance. Sin plantillas, sin sorpresas.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a href="#contact" className="btn-primary inline-flex items-center justify-center">

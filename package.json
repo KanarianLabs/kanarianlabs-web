@@ -8,6 +8,15 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "browserslist": [
+    "chrome >= 100",
+    "firefox >= 100",
+    "edge >= 100",
+    "safari >= 15",
+    "ios_saf >= 15",
+    "and_chr >= 100",
+    "not dead"
+  ],
   "dependencies": {
     "framer-motion": "^10.16.16",
     "lucide-react": "^0.294.0",

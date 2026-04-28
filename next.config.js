@@ -18,6 +18,15 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [],
   },
+  modularizeImports: {
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{ kebabCase member }}',
+      preventFullImport: true,
+    },
+  },
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
   async headers() {
     return [
       {
